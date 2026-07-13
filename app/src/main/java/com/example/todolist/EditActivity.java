@@ -69,6 +69,8 @@ public class EditActivity extends AppCompatActivity {
         String dueDate = editTextDueDate.getText().toString().trim();
 
         if (title.isEmpty()) {
+            editTextTitle.setError("Title is required");
+            editTextTitle.requestFocus();
             Toast.makeText(this, "Title is required", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -77,12 +79,20 @@ public class EditActivity extends AppCompatActivity {
         final android.content.Context appContext = getApplicationContext();
 
         executor.execute(() -> {
-            AppDatabase.getInstance(appContext).taskDao().insert(newTask);
-            runOnUiThread(() -> {
-                if (!isFinishing() && !isDestroyed()) {
-                    finish();
-                }
-            });
+            try {
+                AppDatabase.getInstance(appContext).taskDao().insert(newTask);
+                runOnUiThread(() -> {
+                    if (!isFinishing() && !isDestroyed()) {
+                        finish();
+                    }
+                });
+            } catch (Exception e) {
+                runOnUiThread(() -> {
+                    if (!isFinishing() && !isDestroyed()) {
+                        Toast.makeText(EditActivity.this, "Error: Task could not be saved", Toast.LENGTH_LONG).show();
+                    }
+                });
+            }
         });
     }
 

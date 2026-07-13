@@ -1,6 +1,7 @@
 package com.example.todolist;
 
 import androidx.room.Dao;
+import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
 import androidx.room.Update;
@@ -15,9 +16,12 @@ public interface TaskDao {
     @Update
     void update(Task task);
 
+    @Delete
+    void delete(Task task);
+
     @Query("SELECT * FROM tasks")
     List<Task> getAll();
 
-    @Query("SELECT SUM(id + done) || COUNT(*) FROM tasks")
+    @Query("SELECT COALESCE(SUM(id + done), 0) || '-' || COUNT(*) FROM tasks")
     String getDatabaseHash();
 }
