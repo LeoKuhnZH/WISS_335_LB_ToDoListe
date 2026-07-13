@@ -1,5 +1,6 @@
 package com.example.todolist;
 
+import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -7,6 +8,9 @@ import android.widget.EditText;
 import android.widget.Spinner;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import java.util.Calendar;
+import java.util.Locale;
 
 public class EditActivity extends AppCompatActivity {
     private EditText editTextTitle;
@@ -33,6 +37,21 @@ public class EditActivity extends AppCompatActivity {
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, priorities);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerPriority.setAdapter(adapter);
+
+        // Date Picker logic
+        editTextDueDate.setOnClickListener(v -> {
+            Calendar calendar = Calendar.getInstance();
+            int year = calendar.get(Calendar.YEAR);
+            int month = calendar.get(Calendar.MONTH);
+            int day = calendar.get(Calendar.DAY_OF_MONTH);
+
+            DatePickerDialog datePickerDialog = new DatePickerDialog(EditActivity.this,
+                    (view, year1, month1, dayOfMonth) -> {
+                        String formattedDate = String.format(Locale.getDefault(), "%04d-%02d-%02d", year1, month1 + 1, dayOfMonth);
+                        editTextDueDate.setText(formattedDate);
+                    }, year, month, day);
+            datePickerDialog.show();
+        });
 
         buttonSave.setOnClickListener(v -> {
             // Save logic to be implemented

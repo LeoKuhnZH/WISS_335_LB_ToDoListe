@@ -1,5 +1,6 @@
 package com.example.todolist;
 
+import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
@@ -7,13 +8,17 @@ import androidx.room.PrimaryKey;
 public class Task {
     @PrimaryKey(autoGenerate = true)
     private int id;
+
+    @NonNull
     private String title;
     private String description;
+
+    @NonNull
     private String priority;
     private String dueDate;
     private boolean done;
 
-    public Task(String title, String description, String priority, String dueDate, boolean done) {
+    public Task(@NonNull String title, String description, @NonNull String priority, String dueDate, boolean done) {
         this.title = title;
         this.description = description;
         this.priority = priority;
@@ -29,11 +34,12 @@ public class Task {
         this.id = id;
     }
 
+    @NonNull
     public String getTitle() {
         return title;
     }
 
-    public void setTitle(String title) {
+    public void setTitle(@NonNull String title) {
         this.title = title;
     }
 
@@ -45,11 +51,12 @@ public class Task {
         this.description = description;
     }
 
+    @NonNull
     public String getPriority() {
         return priority;
     }
 
-    public void setPriority(String priority) {
+    public void setPriority(@NonNull String priority) {
         this.priority = priority;
     }
 

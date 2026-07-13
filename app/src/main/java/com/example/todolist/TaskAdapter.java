@@ -14,6 +14,14 @@ import androidx.annotation.Nullable;
 import java.util.List;
 
 public class TaskAdapter extends ArrayAdapter<Task> {
+    
+    private static class ViewHolder {
+        TextView textViewTitle;
+        TextView textViewPriority;
+        TextView textViewDueDate;
+        CheckBox checkBoxDone;
+    }
+
     public TaskAdapter(@NonNull Context context, @NonNull List<Task> objects) {
         super(context, 0, objects);
     }
@@ -21,22 +29,27 @@ public class TaskAdapter extends ArrayAdapter<Task> {
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+        ViewHolder viewHolder;
+
         if (convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.row_layout, parent, false);
+            viewHolder = new ViewHolder();
+            viewHolder.textViewTitle = convertView.findViewById(R.id.textViewTitle);
+            viewHolder.textViewPriority = convertView.findViewById(R.id.textViewPriority);
+            viewHolder.textViewDueDate = convertView.findViewById(R.id.textViewDueDate);
+            viewHolder.checkBoxDone = convertView.findViewById(R.id.checkBoxDone);
+            convertView.setTag(viewHolder);
+        } else {
+            viewHolder = (ViewHolder) convertView.getTag();
         }
 
         Task task = getItem(position);
 
-        TextView textViewTitle = convertView.findViewById(R.id.textViewTitle);
-        TextView textViewPriority = convertView.findViewById(R.id.textViewPriority);
-        TextView textViewDueDate = convertView.findViewById(R.id.textViewDueDate);
-        CheckBox checkBoxDone = convertView.findViewById(R.id.checkBoxDone);
-
         if (task != null) {
-            textViewTitle.setText(task.getTitle());
-            textViewPriority.setText("Priority: " + task.getPriority());
-            textViewDueDate.setText("Due: " + task.getDueDate());
-            checkBoxDone.setChecked(task.isDone());
+            viewHolder.textViewTitle.setText(task.getTitle());
+            viewHolder.textViewPriority.setText("Priority: " + task.getPriority());
+            viewHolder.textViewDueDate.setText("Due: " + task.getDueDate());
+            viewHolder.checkBoxDone.setChecked(task.isDone());
         }
 
         return convertView;
