@@ -4,6 +4,8 @@ import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import java.util.Objects;
+
 @Entity(tableName = "tasks")
 public class Task {
     @PrimaryKey(autoGenerate = true)
@@ -24,6 +26,24 @@ public class Task {
         this.priority = priority;
         this.dueDate = dueDate;
         this.done = done;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Task task = (Task) o;
+        return id == task.id &&
+                done == task.done &&
+                title.equals(task.title) &&
+                Objects.equals(description, task.description) &&
+                priority.equals(task.priority) &&
+                Objects.equals(dueDate, task.dueDate);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, title, description, priority, dueDate, done);
     }
 
     public int getId() {

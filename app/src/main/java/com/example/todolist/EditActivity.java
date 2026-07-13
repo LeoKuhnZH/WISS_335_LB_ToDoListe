@@ -6,11 +6,14 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.Calendar;
 import java.util.Locale;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class EditActivity extends AppCompatActivity {
     private EditText editTextTitle;
@@ -19,6 +22,7 @@ public class EditActivity extends AppCompatActivity {
     private EditText editTextDueDate;
     private Button buttonSave;
     private Button buttonCancel;
+    private final ExecutorService executor = Executors.newSingleThreadExecutor();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,13 +57,38 @@ public class EditActivity extends AppCompatActivity {
             datePickerDialog.show();
         });
 
-        buttonSave.setOnClickListener(v -> {
-            // Save logic to be implemented
-            finish();
-        });
+        buttonSave.setOnClickListener(v -> saveTask());
 
-        buttonCancel.setOnClickListener(v -> {
-            finish();
+        buttonCancel.setOnClickListener(v -> finish());
+    }
+
+    private void saveTask() {
+        String title = editTextTitle.getText().toString().trim();
+        String description = editTextDescription.getText().toString().trim();
+        String priority = spinnerPriority.getSelectedItem().toString();
+        String dueDate = editTextDueDate.getText().toString().trim();
+
+        if (title.isEmpty()) {
+            Toast.makeText(this, "Title is required", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        Task newTask = new Task(title, description, priority, dueDate, false);
+        final android.content.Context appContext = getApplicationContext();
+
+        executor.execute(() -> {
+            AppDatabase.getInstance(appContext).taskDao().insert(newTask);
+            runOnUiThread(() -> {
+                if (!isFinishing() && !isDestroyed()) {
+                    finish();
+                }
+            });
         });
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        executor.shutdown();
     }
 }

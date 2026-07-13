@@ -17,4 +17,7 @@ public interface TaskDao {
 
     @Query("SELECT * FROM tasks")
     List<Task> getAll();
+
+    @Query("SELECT SUM(id + done) || COUNT(*) FROM tasks")
+    String getDatabaseHash();
 }
