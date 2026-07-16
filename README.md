@@ -20,6 +20,7 @@ Diese Android-App ermöglicht es Benutzern, ihre täglichen Aufgaben effizient z
 ## Bekannte Probleme oder nicht umgesetzte Punkte
 *   **Bearbeiten:** Die Funktion zum nachträglichen Bearbeiten einer bestehenden Aufgabe wurde als Bonusfunktion eingestuft und ist in der aktuellen Version noch nicht implementiert.
 *   **Sortierung/Filter:** Eine Filterung nach Status oder eine Sortierung nach Priorität/Datum ist derzeit nicht vorhanden.
+*   **Performance** Die App hat performance probleme auf meiner machine, es könnte damit zusammenhängen, dass der emulator selber vermehrt abstürzt jedoch kann ich dies nicht mit sicherheit bestätigen, oder wiederlegen.
 
 ## Startanleitung
 1.  **Projekt öffnen:** Starten Sie Android Studio und wählen Sie `Open`. Navigieren Sie zum Projektordner `ToDoList` und bestätigen Sie.
